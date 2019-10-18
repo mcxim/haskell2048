@@ -1,0 +1,6 @@
+.stack-work/
+haskell2048.cabal
+package.yaml
+stack.yaml
+stack.yanl.lock
+*~
