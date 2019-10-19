@@ -113,30 +113,32 @@ gameLoop board
   | checkLose board = putStrLn "You lost, no more possible moves."
   | otherwise = do
     input <- getLine
-    if input == "" then gameLoop board else do
-      let nextMove = toLower $ head input
-      let moved = case nextMove of
-            'h' -> move Lft board
-            'a' -> move Lft board
-            'j' -> move Dwn board
-            's' -> move Dwn board
-            'k' -> move Upp board
-            'w' -> move Upp board
-            'l' -> move Rgt board
-            'd' -> move Rgt board
-            'q' -> []
-            _   -> board
-      decideNext board moved
+    if input == ""
+      then gameLoop board
+      else do
+        let nextMove = toLower $ head input
+        let moved = case nextMove of
+              'h' -> move Lft board
+              'a' -> move Lft board
+              'j' -> move Dwn board
+              's' -> move Dwn board
+              'k' -> move Upp board
+              'w' -> move Upp board
+              'l' -> move Rgt board
+              'd' -> move Rgt board
+              'q' -> []
+              _   -> board
+        decideNext board moved
 
 -- | Helper function for the game loop, gets rid of nested if..then..else statements.
 decideNext :: Board -> Board -> IO ()
-decideNext board moved 
+decideNext board moved
   | moved == board = gameLoop board
   | null moved = return ()
   | otherwise = do
     nextBoard <- addRandom moved
     prettyPrint nextBoard
-    gameLoop nextBoard 
+    gameLoop nextBoard
 
 -- | The main funtion.
 runGame :: IO ()
