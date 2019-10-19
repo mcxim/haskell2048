@@ -129,16 +129,15 @@ gameLoop board
               'q' -> []
               _   -> board
         decideNext board moved
-
--- | Helper function for the game loop, gets rid of nested if..then..else statements.
-decideNext :: Board -> Board -> IO ()
-decideNext board moved
-  | moved == board = gameLoop board
-  | null moved = return ()
-  | otherwise = do
-    nextBoard <- addRandom moved
-    prettyPrint nextBoard
-    gameLoop nextBoard
+  where
+    decideNext :: Board -> Board -> IO ()
+    decideNext board moved
+      | moved == board = gameLoop board
+      | null moved = return ()
+      | otherwise = do
+        nextBoard <- addRandom moved
+        prettyPrint nextBoard
+        gameLoop nextBoard 
 
 -- | The main funtion.
 runGame :: IO ()
