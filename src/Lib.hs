@@ -112,8 +112,9 @@ gameLoop board
   | checkWin board = putStrLn "You won! congrats."
   | checkLose board = putStrLn "You lost, no more possible moves."
   | otherwise = do
-    nextMove <- getLine
-    let moved = case toLower (head nextMove) of
+    input <- getLine
+    let nextMove = toLower $ head input
+    let moved = case nextMove of
           'h' -> move Lft board
           'a' -> move Lft board
           'j' -> move Dwn board
@@ -124,14 +125,17 @@ gameLoop board
           'd' -> move Rgt board
           'q' -> []
           _   -> board
-    if moved == board
-      then gameLoop board
-      else if null moved
-        then return ()
-        else do
-          nextBoard <- addRandom moved
-          prettyPrint nextBoard
-          gameLoop nextBoard
+    decideNext board moved
+
+-- | Helper function for the game loop, gets rid of nested if..then..else statements.
+decideNext :: Board -> Board -> IO ()
+decideNext board moved 
+  | moved == board = gameLoop board
+  | null moved = return ()
+  | otherwise = do
+    nextBoard <- addRandom moved
+    prettyPrint nextBoard
+    gameLoop nextBoard 
 
 -- | The main funtion.
 runGame :: IO ()
